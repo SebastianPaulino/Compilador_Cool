@@ -36,11 +36,11 @@
 "true"  { return TRUE_CONST;}
 "false"  { return FALSE_CONST;}
 
-[A-Z][a-zA-Z0-9_]*  {return TYPEID;}//typeID = nome de classe/tipo inicia maiuscula sequencia de letras digitos ou _
-[a-z][a-zA-Z0-9_]*  {return OBJECTID;}// ObjectID = nome variavel/metodo inicia minuscula resto igual
+[A-Z][a-zA-Z0-9_]*  { return TYPEID;} //TypeID = nome de classe/tipo inicia maiuscula sequencia de letras digitos ou _
+[a-z][a-zA-Z0-9_]*  { return OBJECTID;} //ObjectID = nome variavel/metodo inicia minuscula resto igual
 
-[0-9]+  {return INT_CONST;} // nao tem menos pois 7 + ~9 = 7-9
-\"([^"\\\n]|\\.)*\"  {return STR_CONST;}
+[0-9]+  { return INT_CONST;} 
+\"([^"\\\n]|\\.)*\"  { return STR_CONST;}
 
 "<-"  { return ASSIGN;}
 "<="  { return LE;}
