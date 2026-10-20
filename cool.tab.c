@@ -1456,6 +1456,5 @@ int main(int argc, char **argv) {
     if(yyparse() == 0) {
         printf("Analise sintatica concluida\n");
     }
-    //yyparse(); 
     return 0;
 }

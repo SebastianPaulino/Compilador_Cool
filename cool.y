@@ -119,7 +119,7 @@ item_case:
 
 void yyerror(const char *s) {
     extern int yylineno;
-    printf("Erro Sintatico na linha %d: %s\n", yylineno, s);
+    printf("Erro sintatico na linha %d: %s\n", yylineno, s);
 }
 
 int main(int argc, char **argv) {

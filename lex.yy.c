@@ -958,22 +958,22 @@ YY_RULE_SETUP
 case 25:
 YY_RULE_SETUP
 #line 39 "cool.l"
-{return TYPEID;}//typeID = nome de classe/tipo inicia maiuscula sequencia de letras digitos ou _
+{ return TYPEID;} //TypeID = nome de classe/tipo inicia maiuscula sequencia de letras digitos ou _
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 40 "cool.l"
-{return OBJECTID;}// ObjectID = nome variavel/metodo inicia minuscula resto igual
+{ return OBJECTID;} //ObjectID = nome variavel/metodo inicia minuscula resto igual
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 42 "cool.l"
-{return INT_CONST;} // nao tem menos pois 7 + ~9 = 7-9
+{ return INT_CONST;} 
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 43 "cool.l"
-{return STR_CONST;}
+{ return STR_CONST;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
