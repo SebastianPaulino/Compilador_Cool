@@ -1,5 +1,7 @@
 %{
     #include <stdio.h>
+    #include <string>
+    #include "arv.h"
     #include "cool.tab.h"
 %}
 
@@ -36,11 +38,11 @@
 "true"  { return TRUE_CONST;}
 "false"  { return FALSE_CONST;}
 
-[A-Z][a-zA-Z0-9_]*  { return TYPEID;} //TypeID = nome de classe/tipo inicia maiuscula sequencia de letras digitos ou _
-[a-z][a-zA-Z0-9_]*  { return OBJECTID;} //ObjectID = nome variavel/metodo inicia minuscula resto igual
+[A-Z][a-zA-Z0-9_]*  { yylval.texto = strdup(yytext); return TYPEID;} //TypeID = nome de classe/tipo inicia maiuscula sequencia de letras digitos ou _
+[a-z][a-zA-Z0-9_]*  { yylval.texto = strdup(yytext); return OBJECTID;} //ObjectID = nome variavel/metodo inicia minuscula resto igual
 
-[0-9]+  { return INT_CONST;} 
-\"([^"\\\n]|\\.)*\"  { return STR_CONST;}
+[0-9]+  { yylval.texto = strdup(yytext); return INT_CONST;} 
+\"([^"\\\n]|\\.)*\"  { yylval.texto = strdup(yytext); return STR_CONST;}
 
 "<-"  { return ASSIGN;}
 "<="  { return LE;}

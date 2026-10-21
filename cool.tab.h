@@ -54,29 +54,29 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    CLASS = 258,                   /* CLASS  */
-    INHERITS = 259,                /* INHERITS  */
-    IF = 260,                      /* IF  */
-    THEN = 261,                    /* THEN  */
-    ELSE = 262,                    /* ELSE  */
-    FI = 263,                      /* FI  */
-    WHILE = 264,                   /* WHILE  */
-    LOOP = 265,                    /* LOOP  */
-    POOL = 266,                    /* POOL  */
-    LET = 267,                     /* LET  */
-    IN = 268,                      /* IN  */
-    CASE = 269,                    /* CASE  */
-    OF = 270,                      /* OF  */
-    ESAC = 271,                    /* ESAC  */
-    NEW = 272,                     /* NEW  */
-    ISVOID = 273,                  /* ISVOID  */
-    NOT = 274,                     /* NOT  */
-    TRUE_CONST = 275,              /* TRUE_CONST  */
-    FALSE_CONST = 276,             /* FALSE_CONST  */
-    TYPEID = 277,                  /* TYPEID  */
-    OBJECTID = 278,                /* OBJECTID  */
-    INT_CONST = 279,               /* INT_CONST  */
-    STR_CONST = 280,               /* STR_CONST  */
+    TYPEID = 258,                  /* TYPEID  */
+    OBJECTID = 259,                /* OBJECTID  */
+    INT_CONST = 260,               /* INT_CONST  */
+    STR_CONST = 261,               /* STR_CONST  */
+    CLASS = 262,                   /* CLASS  */
+    INHERITS = 263,                /* INHERITS  */
+    IF = 264,                      /* IF  */
+    THEN = 265,                    /* THEN  */
+    ELSE = 266,                    /* ELSE  */
+    FI = 267,                      /* FI  */
+    WHILE = 268,                   /* WHILE  */
+    LOOP = 269,                    /* LOOP  */
+    POOL = 270,                    /* POOL  */
+    LET = 271,                     /* LET  */
+    IN = 272,                      /* IN  */
+    CASE = 273,                    /* CASE  */
+    OF = 274,                      /* OF  */
+    ESAC = 275,                    /* ESAC  */
+    NEW = 276,                     /* NEW  */
+    ISVOID = 277,                  /* ISVOID  */
+    NOT = 278,                     /* NOT  */
+    TRUE_CONST = 279,              /* TRUE_CONST  */
+    FALSE_CONST = 280,             /* FALSE_CONST  */
     ASSIGN = 281,                  /* ASSIGN  */
     LE = 282,                      /* LE  */
     DARROW = 283                   /* DARROW  */
@@ -86,7 +86,17 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 15 "cool.y"
+
+    char* texto;
+    No* no_arvore;
+
+#line 97 "cool.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

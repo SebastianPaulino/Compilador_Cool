@@ -543,10 +543,12 @@ char *yytext;
 #line 1 "cool.l"
 #line 2 "cool.l"
     #include <stdio.h>
+    #include <string>
+    #include "arv.h"
     #include "cool.tab.h"
-#line 547 "lex.yy.c"
-
 #line 549 "lex.yy.c"
+
+#line 551 "lex.yy.c"
 
 #define INITIAL 0
 #define COMENTARIO_BLOCO 1
@@ -764,9 +766,9 @@ YY_DECL
 		}
 
 	{
-#line 11 "cool.l"
+#line 13 "cool.l"
 
-#line 769 "lex.yy.c"
+#line 771 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -836,251 +838,251 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 12 "cool.l"
+#line 14 "cool.l"
 { /*nao faz nada so tira tab espaço quebra de linha*/ }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 13 "cool.l"
+#line 15 "cool.l"
 { /*tira comentarios*/ }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 14 "cool.l"
+#line 16 "cool.l"
 { BEGIN(COMENTARIO_BLOCO); }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 15 "cool.l"
+#line 17 "cool.l"
 { BEGIN(INITIAL); }
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 16 "cool.l"
+#line 18 "cool.l"
 {/*ignora qualquer comentario ou quebra de linha dentro*/}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 19 "cool.l"
+#line 21 "cool.l"
 { return CLASS;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 20 "cool.l"
+#line 22 "cool.l"
 { return INHERITS;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 21 "cool.l"
+#line 23 "cool.l"
 { return IF;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 22 "cool.l"
+#line 24 "cool.l"
 { return THEN;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 23 "cool.l"
+#line 25 "cool.l"
 { return ELSE;} 
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 24 "cool.l"
+#line 26 "cool.l"
 { return FI;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 25 "cool.l"
+#line 27 "cool.l"
 { return WHILE;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 26 "cool.l"
+#line 28 "cool.l"
 { return LOOP;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 27 "cool.l"
+#line 29 "cool.l"
 { return POOL;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 28 "cool.l"
+#line 30 "cool.l"
 { return LET;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 29 "cool.l"
+#line 31 "cool.l"
 { return IN;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 30 "cool.l"
+#line 32 "cool.l"
 { return CASE;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 31 "cool.l"
+#line 33 "cool.l"
 { return OF;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 32 "cool.l"
+#line 34 "cool.l"
 { return ESAC;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 33 "cool.l"
+#line 35 "cool.l"
 { return NEW;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 34 "cool.l"
+#line 36 "cool.l"
 { return ISVOID;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 35 "cool.l"
+#line 37 "cool.l"
 { return NOT;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 36 "cool.l"
+#line 38 "cool.l"
 { return TRUE_CONST;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 37 "cool.l"
+#line 39 "cool.l"
 { return FALSE_CONST;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 39 "cool.l"
-{ return TYPEID;} //TypeID = nome de classe/tipo inicia maiuscula sequencia de letras digitos ou _
+#line 41 "cool.l"
+{ yylval.texto = strdup(yytext); return TYPEID;} //TypeID = nome de classe/tipo inicia maiuscula sequencia de letras digitos ou _
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 40 "cool.l"
-{ return OBJECTID;} //ObjectID = nome variavel/metodo inicia minuscula resto igual
+#line 42 "cool.l"
+{ yylval.texto = strdup(yytext); return OBJECTID;} //ObjectID = nome variavel/metodo inicia minuscula resto igual
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 42 "cool.l"
-{ return INT_CONST;} 
+#line 44 "cool.l"
+{ yylval.texto = strdup(yytext); return INT_CONST;} 
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 43 "cool.l"
-{ return STR_CONST;}
+#line 45 "cool.l"
+{ yylval.texto = strdup(yytext); return STR_CONST;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 45 "cool.l"
+#line 47 "cool.l"
 { return ASSIGN;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 46 "cool.l"
+#line 48 "cool.l"
 { return LE;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 47 "cool.l"
+#line 49 "cool.l"
 { return DARROW;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 48 "cool.l"
+#line 50 "cool.l"
 { return '+';}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 49 "cool.l"
+#line 51 "cool.l"
 { return '-';}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 50 "cool.l"
+#line 52 "cool.l"
 { return '*';}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 51 "cool.l"
+#line 53 "cool.l"
 { return '/';}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 52 "cool.l"
+#line 54 "cool.l"
 { return '~';}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 53 "cool.l"
+#line 55 "cool.l"
 { return '<';}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 54 "cool.l"
+#line 56 "cool.l"
 { return '=';}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 55 "cool.l"
+#line 57 "cool.l"
 { return '.';}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 56 "cool.l"
+#line 58 "cool.l"
 { return ':';}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 57 "cool.l"
+#line 59 "cool.l"
 { return ';';}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 58 "cool.l"
+#line 60 "cool.l"
 { return ',';}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 59 "cool.l"
+#line 61 "cool.l"
 { return '{';}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 60 "cool.l"
+#line 62 "cool.l"
 { return '}';}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 61 "cool.l"
+#line 63 "cool.l"
 { return '(';}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 62 "cool.l"
+#line 64 "cool.l"
 { return ')';}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 63 "cool.l"
+#line 65 "cool.l"
 { return '@';}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 65 "cool.l"
+#line 67 "cool.l"
 { printf("Erro lexico na linha %d: caractere invalido '%s'\n", yylineno,yytext);}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 67 "cool.l"
+#line 69 "cool.l"
 ECHO;
 	YY_BREAK
-#line 1083 "lex.yy.c"
+#line 1085 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMENTARIO_BLOCO):
 	yyterminate();
@@ -2098,5 +2100,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 67 "cool.l"
+#line 69 "cool.l"
 
