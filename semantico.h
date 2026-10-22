@@ -11,7 +11,7 @@
 
 class TabSimb {
 private:
-    // Um vetor de mapas simulando a pilha de escopo
+    // Um vetor de mapas simulando a pilha de escopo controlando o metodo
     // chave: nome do metodo, valor : tipo int string obj etc
     std::vector<std::map<std::string, std::string>> scopes;
 
@@ -41,6 +41,7 @@ public:
         return true;
     }
 
+    //encontrou variavel, quer saber o tipo
     std::string lookup(const std::string& name) {
         // Procura o identificador do escopo mais interno para o mais externo
         for (auto it = scopes.rbegin(); it != scopes.rend(); ++it) {
@@ -65,6 +66,7 @@ class analisadorSemantico {
             erroSemantico = true;
         }
 
+        // Funçao para verificar o tipo de uma expressão (retorna o tipo)
         std::string verificar_expressao(No* expr) {
             if (!expr) return "Object"; // Se a expressão for nula, retorna Object como tipo padrão
 
@@ -92,6 +94,85 @@ class analisadorSemantico {
                 }
                 return "Int";
             }
+
+            //subtração
+            if (Minus* m = dynamic_cast<Minus*>(expr)) {
+                std::string t1 = verificar_expressao(m->esq);
+                std::string t2 = verificar_expressao(m->dir);
+                if (t1 != "Int" || t2 != "Int") {
+                    registra_erro("Operador '-' aplicado a tipos nao inteiros: " + t1 + " e " + t2);
+                }
+                return "Int";
+            }
+
+            //multiplicação
+            if (Mult* m = dynamic_cast<Mult*>(expr)) {
+                std::string t1 = verificar_expressao(m->esq);
+                std::string t2 = verificar_expressao(m->dir);
+                if (t1 != "Int" || t2 != "Int") {
+                    registra_erro("Operador '*' aplicado a tipos nao inteiros: " + t1 + " e " + t2);
+                }
+                return "Int";
+            }
+
+            //Divisão
+            if (Divide* d = dynamic_cast<Divide*>(expr)) {
+                std::string t1 = verificar_expressao(d->esq);
+                std::string t2 = verificar_expressao(d->dir);
+                if (t1 != "Int" || t2 != "Int") {
+                    registra_erro("Operador '/' aplicado a tipos nao inteiros: " + t1 + " e " + t2);
+                }
+                return "Int";
+            }
+
+            //Menor que
+            if (MenorQue* m = dynamic_cast<MenorQue*>(expr)) {
+                std::string t1 = verificar_expressao(m->esq);
+                std::string t2 = verificar_expressao(m->dir);
+                if (t1 != "Int" || t2 != "Int") {
+                    registra_erro("Operador '<' aplicado a tipos nao inteiros: " + t1 + " e " + t2);
+                }
+                return "Bool";
+            }
+
+            //menor ou igual
+            if (MenorIgual* m = dynamic_cast<MenorIgual*>(expr)) {
+                std::string t1 = verificar_expressao(m->esq);
+                std::string t2 = verificar_expressao(m->dir);
+                if (t1 != "Int" || t2 != "Int") {
+                    registra_erro("Operador '<=' aplicado a tipos nao inteiros: " + t1 + " e " + t2);
+                }
+                return "Bool";
+            }
+            
+            //igualdade
+            if (Igual* i = dynamic_cast<Igual*>(expr)) {
+                std::string t1 = verificar_expressao(i->esq);
+                std::string t2 = verificar_expressao(i->dir);
+                if (t1 != t2) {
+                    registra_erro("Operador '=' aplicado a tipos diferentes: " + t1 + " e " + t2);
+                }
+                return "Bool";
+            }
+            
+            //negacao
+            if (Negacao* n = dynamic_cast<Negacao*>(expr)) {
+                std::string t = verificar_expressao(n->expr);
+                if (t != "Bool") {
+                    registra_erro("Operador 'not' aplicado a tipo nao booleano: " + t);
+                }
+                return "Bool";
+            }
+
+            //not
+            if (Not* n = dynamic_cast<Not*>(expr)) {
+                std::string t = verificar_expressao(n->expr);
+                if (t != "Bool") {
+                    registra_erro("Operador 'not' aplicado a tipo nao booleano: " + t);
+                }
+                return "Bool";
+            }
+
             if (Bloco* b = dynamic_cast<Bloco*>(expr)) {
                 return verificar_expressao(b->bloco_exprs);
             }
@@ -170,10 +251,11 @@ class analisadorSemantico {
                         if (heranca.find(atr->tipo) == heranca.end()) {
                             registra_erro("Tipo " + atr->tipo + " do atributo " + atr->nome + " na classe " + c->nome + " nao definido.");
                         }
-                        // adiciona o atributo ao escopo da classe
+                        // ja esta definido na classe? se sim, erro
                         if (!tabelaSimbolos.addId(atr->nome, atr->tipo)) {
                             registra_erro("Atributo " + atr->nome + " ja definido na classe " + c->nome + ".");
                         }
+                        // verifica se a expressao inicial do atributo e valida
                         if (atr->expr_inicial){
                             verificar_expressao(atr->expr_inicial);
                         }

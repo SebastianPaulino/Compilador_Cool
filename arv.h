@@ -10,17 +10,13 @@ inline std::string safe_str(const std::string& s) {
     return s;
 }
 
-class analisadorSemantico; 
-
 // nó base
 class No {
 public:
     std::string tipo_no; // tipo do no util para analise semantica
     virtual ~No() {}
 
-    //debug
     virtual void print(int indent = 0) const = 0;
-    virtual void verificar_semantica(analisadorSemantico& semantico){}
 };
 
 //imprime com indentação da arvore
