@@ -58,6 +58,9 @@ public:
 class analisadorSemantico {
     public:
         std::map<std::string, std::string> heranca; // mapa de classe para superclasse
+        std::map<std::string, std::string> retornoMetodos; // guarda: nome_do_metodo -> tipo_de_retorno
+        std::map<std::string, std::vector<std::string>> paramsMetodos; // guarda: nome_do_metodo -> lista de tipos dos parametros
+
         TabSimb tabelaSimbolos; // tabela de símbolos
         bool erroSemantico = false; // flag para indicar se tem erro semantico
 
@@ -83,6 +86,56 @@ class analisadorSemantico {
                     return "Object"; // Retorna Object como tipo padrão em caso de erro
                 }
                 return tipo;
+            }
+
+            if(Let* l = dynamic_cast<Let*>(expr)) {
+                ListaLet* lista = dynamic_cast<ListaLet*>(l->declaracoes);
+                int escopos = 0;
+
+                if(lista){
+                    for (No* item_no : lista->elementos){
+                        LetItem* item = (LetItem*)item_no;
+
+                        //verifica se o tipo existe
+                        if (heranca.find(item->tipo) == heranca.end()) {
+                            registra_erro("Tipo '" + item->tipo + "' nao definido para a variavel '" + item->nome + "'.");
+                        }
+                        //se tiver valor inicial verifica o tipo
+                        if (item->expr_inicial) {
+                            std::string tipo_inicial = verificar_expressao(item->expr_inicial);
+                            if (tipo_inicial != item->tipo) {
+                                registra_erro("Tipo do valor inicial da variavel '" + item->nome + "' nao corresponde ao tipo declarado.");
+                            }
+                        }
+                        //adiciona a variavel na tabela de simbolos
+                        tabelaSimbolos.enterScope();
+                        escopos++;
+                        tabelaSimbolos.addId(item->nome, item->tipo);
+                    }
+                    //verifica o corpo 'in'
+                    std::string tipo_corpo = verificar_expressao(l->corpo);
+
+                    //sai dos escopos
+                    for (int i = 0; i < escopos; i++) {
+                        tabelaSimbolos.exitScope();
+                    }
+
+                    return tipo_corpo; // Retorna o tipo do corpo do let
+                }
+            }
+
+            //atribuição (<-)
+            if(Atribuicao* at = dynamic_cast<Atribuicao*>(expr)){
+                std::string tipo_variavel = tabelaSimbolos.lookup(at->nome);
+                if(tipo_variavel.empty()) {
+                    registra_erro("Identificador '" + at->nome + "' nao definido para atribuicao.");
+                    return "Object"; // Retorna Object como tipo padrão em caso de erro
+                }
+                std::string tipo_expr = verificar_expressao(at->expr);
+                if(tipo_variavel != tipo_expr) {
+                    registra_erro("Tipo da expressao atribuida a '" + at->nome + "' nao corresponde ao tipo da variavel.");
+                }
+                return tipo_expr; // Retorna o tipo da expressão atribuída
             }
 
             //soma
@@ -189,19 +242,36 @@ class analisadorSemantico {
                 if(ch->expr_objeto){
                     verificar_expressao(ch->expr_objeto);
                 }
-                if(ch->exprs){
-                    verificar_expressao(ch->exprs);
-                }
-                return "Object";  
-            }
-            if (ListaExprs* le = dynamic_cast<ListaExprs*>(expr)) {
-                    for (No* e : le->elementos) {
-                        verificar_expressao(e);
-                    }
-                    return "Object"; 
-            }
 
-            return "Object";
+                // Verifica se o método está definido
+                if(retornoMetodos.find(ch->metodo) == retornoMetodos.end()) {
+                    registra_erro("Metodo '" + ch->metodo + "' nao definido.");
+                    return "Object"; // Retorna Object como tipo padrão em caso de erro
+                }
+
+                // Verifica os tipos dos argumentos passados
+                std::vector<std::string> args_passados;
+                if (ListaExprs* le = dynamic_cast<ListaExprs*>(ch->exprs)) {
+                    for (No* e : le->elementos) {
+                        args_passados.push_back(verificar_expressao(e));
+                    }
+                }
+
+                // Verifica se o número de argumentos e os tipos correspondem ao esperado
+                std::vector<std::string> tipos_esperados = paramsMetodos[ch->metodo];
+                if(args_passados.size() != tipos_esperados.size()) {
+                    registra_erro("Numero de argumentos para o metodo '" + ch->metodo + "' nao corresponde ao esperado.");
+                } else {
+                    for (size_t i = 0; i < args_passados.size(); ++i) {
+                        if (args_passados[i] != tipos_esperados[i]) {
+                            registra_erro("Tipo do argumento " + std::to_string(i+1) + " para o metodo '" + ch->metodo + "' nao corresponde ao esperado.");
+                        }
+                    }
+                }
+
+                return retornoMetodos[ch->metodo]; // Retorna o tipo de retorno do método
+            }
+            return "Object"; // Retorna Object como tipo padrão se a expressão não for reconhecida
         }
         
         void construir_grafo_classes(No* programa){
@@ -210,7 +280,25 @@ class analisadorSemantico {
             heranca["Int"] = "Object"; // Int herda de Object
             heranca["String"] = "Object"; // String herda de Object
             heranca["Bool"] = "Object"; // Bool herda de Object
+
+            retornoMetodos["out_string"] = "IO"; // out_string retorna IO
+            paramsMetodos["out_string"] = {"String"}; // out_string exige String
+
+            retornoMetodos["out_int"] = "IO"; // out_int retorna IO
+            paramsMetodos["out_int"] = {"Int"}; // out_int exige Int
             
+            retornoMetodos["in_string"] = "String"; // in_string retorna String
+            paramsMetodos["in_string"] = {}; // in_string não exige parâmetros
+
+            retornoMetodos["in_int"] = "Int"; // in_int retorna Int
+            paramsMetodos["in_int"] = {}; // in_int não exige parâmetros
+
+            retornoMetodos["concat"] = "String"; // concat retorna String
+            paramsMetodos["concat"] = {"String"}; // concat exige String
+
+            retornoMetodos["length"] = "Int"; // length retorna Int
+            paramsMetodos["length"] = {}; // length não exige parâmetros
+        
             Programa* prog = (Programa*)programa;
 
             ListaClasses* lista = (ListaClasses*)prog->lista_classes;
@@ -227,6 +315,31 @@ class analisadorSemantico {
                 }
 
                 heranca[c->nome] = c->superclasse;
+            }
+
+            //2 verificação, valida se as superclasses existem e se não há ciclo de herança
+            for (No* c_no : lista->elementos) {
+
+                Classe* c = (Classe*)c_no;
+
+                if (!c->superclasse.empty() && heranca.find(c->superclasse) == heranca.end()) {
+                    registra_erro("Superclasse '" + c->superclasse + "' da classe '" + c->nome + "' nao foi definida.");
+                }
+
+                // Verifica ciclo de heranca
+                std::string atual = c->superclasse;
+                size_t passos = 0;
+                while (!atual.empty() && passos <= heranca.size()) {
+                    if (atual == c->nome) {
+                        registra_erro("Ciclo de heranca detectado envolvendo a classe '" + c->nome + "'.");
+                        break;
+                    }
+                    if (heranca.find(atual) == heranca.end()){
+                        break;
+                    }
+                    atual = heranca[atual];
+                    passos++;
+                }
             }
 
             if (heranca.find("Main") == heranca.end()) {
@@ -262,6 +375,18 @@ class analisadorSemantico {
                     }
                     Metodo* met = dynamic_cast<Metodo*>(f_no);
                     if (met) {
+                        retornoMetodos[met->nome] = met->tipo_retorno;
+                        std::vector<std::string> tipos_parametros;
+
+                        // Armazena o tipo de retorno do método
+                        if(met->formals){
+                            ListaFormais* formals = (ListaFormais*)met->formals;
+                            for (No* f : formals->elementos) {
+                                tipos_parametros.push_back(((Formal*)f)->tipo);
+                            }
+                        }
+                        paramsMetodos[met->nome] = tipos_parametros;
+
                         // Verifica se o tipo de retorno do método está definido na herança
                         if (heranca.find(met->tipo_retorno) == heranca.end()) {
                             registra_erro("Tipo de retorno " + met->tipo_retorno + " do metodo " + met->nome + " na classe " + c->nome + " nao definido.");

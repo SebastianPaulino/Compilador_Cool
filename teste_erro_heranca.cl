@@ -1,4 +1,4 @@
-class Main inherits Int {
+class Main inherits String {
     main(): Object {
         0
     };
