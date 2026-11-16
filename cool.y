@@ -5,6 +5,7 @@
     #include <string>
     #include "arv.h"
     #include "semantico.h"
+    #include "gerador.h"
 
     int yylex(); 
     void yyerror(const char *s); 
@@ -364,6 +365,9 @@ int main(int argc, char **argv) {
                 printf("Erros semanticos encontrados.\n");
             } else {
                 printf("Analise semantica concluida com sucesso!\n");
+                printf("\n=== GERACAO DE CODIGO (BRIL) ===\n");
+                GeradorCodigo gerador;
+                gerador.gerar(raiz_arv, "saida.bril");
             }
         } else {
             printf("A arvore de sintaxe abstrata esta vazia.\n");

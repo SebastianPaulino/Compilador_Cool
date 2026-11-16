@@ -88,7 +88,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 15 "cool.y"
+#line 16 "cool.y"
 
     char* texto;
     No* no_arvore;

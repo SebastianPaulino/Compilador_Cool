@@ -75,13 +75,14 @@
     #include <string>
     #include "arv.h"
     #include "semantico.h"
+    #include "gerador.h"
 
     int yylex(); 
     void yyerror(const char *s); 
 
     Programa* raiz_arv = nullptr; /* ponteiro para a raiz da arvore de sintaxe abstrata */
 
-#line 85 "cool.tab.c"
+#line 86 "cool.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -559,12 +560,12 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    39,    39,    47,    54,    63,    68,    77,    81,    88,
-      95,   104,   108,   112,   121,   124,   131,   138,   147,   154,
-     157,   161,   165,   169,   172,   175,   178,   181,   184,   187,
-     190,   193,   196,   199,   202,   205,   208,   211,   214,   217,
-     220,   223,   226,   229,   232,   238,   241,   248,   255,   264,
-     271,   280,   287,   294,   300,   308,   315,   324
+       0,    40,    40,    48,    55,    64,    69,    78,    82,    89,
+      96,   105,   109,   113,   122,   125,   132,   139,   148,   155,
+     158,   162,   166,   170,   173,   176,   179,   182,   185,   188,
+     191,   194,   197,   200,   203,   206,   209,   212,   215,   218,
+     221,   224,   227,   230,   233,   239,   242,   249,   256,   265,
+     272,   281,   288,   295,   301,   309,   316,   325
 };
 #endif
 
@@ -1238,445 +1239,445 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* programa: lista_classes  */
-#line 40 "cool.y"
+#line 41 "cool.y"
     {
         raiz_arv = new Programa((yyvsp[0].no_arvore));
         (yyval.no_arvore) = raiz_arv;
     }
-#line 1247 "cool.tab.c"
+#line 1248 "cool.tab.c"
     break;
 
   case 3: /* lista_classes: classe ';'  */
-#line 48 "cool.y"
+#line 49 "cool.y"
     {
         /* encontrou a primeira classe = cria uma nova lista vazia e adiciona ela */
         ListaClasses* l = new ListaClasses();
         l->adicionar((yyvsp[-1].no_arvore));
         (yyval.no_arvore) = l;
     }
-#line 1258 "cool.tab.c"
+#line 1259 "cool.tab.c"
     break;
 
   case 4: /* lista_classes: lista_classes classe ';'  */
-#line 55 "cool.y"
+#line 56 "cool.y"
     {
         /* ja tem uma lista $1 = só adiciona a nova classe $2 nela */
         ((ListaClasses*)(yyvsp[-2].no_arvore))->adicionar((yyvsp[-1].no_arvore));
         (yyval.no_arvore) = (yyvsp[-2].no_arvore);
     }
-#line 1268 "cool.tab.c"
+#line 1269 "cool.tab.c"
     break;
 
   case 5: /* classe: CLASS TYPEID '{' features '}'  */
-#line 64 "cool.y"
+#line 65 "cool.y"
     {
         /* $2 é o TYPEID (nome da classe) $4 são as features herda de object por padrao. */
         (yyval.no_arvore) = new Classe((yyvsp[-3].texto), "Object", (yyvsp[-1].no_arvore));
     }
-#line 1277 "cool.tab.c"
+#line 1278 "cool.tab.c"
     break;
 
   case 6: /* classe: CLASS TYPEID INHERITS TYPEID '{' features '}'  */
-#line 69 "cool.y"
+#line 70 "cool.y"
     {
         /* $2 é o TYPEID (nome da classe) $4 é o TYPEID da classe pai $6 são as features */
         (yyval.no_arvore) = new Classe((yyvsp[-5].texto), (yyvsp[-3].texto), (yyvsp[-1].no_arvore));
     }
-#line 1286 "cool.tab.c"
+#line 1287 "cool.tab.c"
     break;
 
   case 7: /* features: %empty  */
-#line 77 "cool.y"
+#line 78 "cool.y"
     {
         /* se a classe for vazia = retorna uma lista vazia */
         (yyval.no_arvore) = new ListaFeatures();
     }
-#line 1295 "cool.tab.c"
+#line 1296 "cool.tab.c"
     break;
 
   case 8: /* features: lista_features  */
-#line 82 "cool.y"
+#line 83 "cool.y"
     {
         (yyval.no_arvore) = (yyvsp[0].no_arvore);
     }
-#line 1303 "cool.tab.c"
+#line 1304 "cool.tab.c"
     break;
 
   case 9: /* lista_features: feature ';'  */
-#line 89 "cool.y"
+#line 90 "cool.y"
     {
         /* encontrou a primeira feature = cria uma nova lista vazia e adiciona ela */
         ListaFeatures* l = new ListaFeatures();
         l->adicionar((yyvsp[-1].no_arvore));
         (yyval.no_arvore) = l;
     }
-#line 1314 "cool.tab.c"
+#line 1315 "cool.tab.c"
     break;
 
   case 10: /* lista_features: lista_features feature ';'  */
-#line 96 "cool.y"
+#line 97 "cool.y"
     {
         /* ja tem uma lista $1 = só adiciona a nova feature $2 nela */
         ((ListaFeatures*)(yyvsp[-2].no_arvore))->adicionar((yyvsp[-1].no_arvore));
         (yyval.no_arvore) = (yyvsp[-2].no_arvore);
     }
-#line 1324 "cool.tab.c"
+#line 1325 "cool.tab.c"
     break;
 
   case 11: /* feature: OBJECTID ':' TYPEID  */
-#line 105 "cool.y"
+#line 106 "cool.y"
     {
         (yyval.no_arvore) = new Atributo((yyvsp[-2].texto), (yyvsp[0].texto), NULL);
     }
-#line 1332 "cool.tab.c"
+#line 1333 "cool.tab.c"
     break;
 
   case 12: /* feature: OBJECTID ':' TYPEID ASSIGN expr  */
-#line 109 "cool.y"
+#line 110 "cool.y"
     {
         (yyval.no_arvore) = new Atributo((yyvsp[-4].texto), (yyvsp[-2].texto), (yyvsp[0].no_arvore));
     }
-#line 1340 "cool.tab.c"
+#line 1341 "cool.tab.c"
     break;
 
   case 13: /* feature: OBJECTID '(' formals ')' ':' TYPEID '{' expr '}'  */
-#line 113 "cool.y"
+#line 114 "cool.y"
     {
         /* $1 nome do metodo, $3 parametros, $6 é o tipo de retorno, $8 é o corpo do metodo */
         (yyval.no_arvore) = new Metodo((yyvsp[-8].texto), (yyvsp[-6].no_arvore), (yyvsp[-3].texto), (yyvsp[-1].no_arvore));
     }
-#line 1349 "cool.tab.c"
+#line 1350 "cool.tab.c"
     break;
 
   case 14: /* formals: %empty  */
-#line 121 "cool.y"
+#line 122 "cool.y"
     {
         (yyval.no_arvore) = new ListaFormais();
     }
-#line 1357 "cool.tab.c"
+#line 1358 "cool.tab.c"
     break;
 
   case 15: /* formals: lista_formals  */
-#line 125 "cool.y"
+#line 126 "cool.y"
     {
         (yyval.no_arvore) = (yyvsp[0].no_arvore);
     }
-#line 1365 "cool.tab.c"
+#line 1366 "cool.tab.c"
     break;
 
   case 16: /* lista_formals: formal  */
-#line 132 "cool.y"
+#line 133 "cool.y"
     {
         /* encontrou o primeiro formal = cria uma nova lista vazia e adiciona ele */
         ListaFormais* l = new ListaFormais();
         l->adicionar((yyvsp[0].no_arvore));
         (yyval.no_arvore) = l;
     }
-#line 1376 "cool.tab.c"
+#line 1377 "cool.tab.c"
     break;
 
   case 17: /* lista_formals: lista_formals ',' formal  */
-#line 139 "cool.y"
+#line 140 "cool.y"
     {
         /* ja tem uma lista $1 = só adiciona o novo formal $3 nela */
         ((ListaFormais*)(yyvsp[-2].no_arvore))->adicionar((yyvsp[0].no_arvore));
         (yyval.no_arvore) = (yyvsp[-2].no_arvore);
     }
-#line 1386 "cool.tab.c"
+#line 1387 "cool.tab.c"
     break;
 
   case 18: /* formal: OBJECTID ':' TYPEID  */
-#line 148 "cool.y"
+#line 149 "cool.y"
     {
         (yyval.no_arvore) = new Formal((yyvsp[-2].texto), (yyvsp[0].texto));
     }
-#line 1394 "cool.tab.c"
+#line 1395 "cool.tab.c"
     break;
 
   case 19: /* expr: OBJECTID ASSIGN expr  */
-#line 155 "cool.y"
+#line 156 "cool.y"
     {    (yyval.no_arvore) = new Atribuicao((yyvsp[-2].texto), (yyvsp[0].no_arvore));  }
-#line 1400 "cool.tab.c"
+#line 1401 "cool.tab.c"
     break;
 
   case 20: /* expr: expr '.' OBJECTID '(' exprs ')'  */
-#line 159 "cool.y"
+#line 160 "cool.y"
     {    (yyval.no_arvore) = new Chamada((yyvsp[-5].no_arvore), (yyvsp[-3].texto), (yyvsp[-1].no_arvore));  }
-#line 1406 "cool.tab.c"
+#line 1407 "cool.tab.c"
     break;
 
   case 21: /* expr: expr '@' TYPEID '.' OBJECTID '(' exprs ')'  */
-#line 163 "cool.y"
+#line 164 "cool.y"
     {    (yyval.no_arvore) = new ChamadaEstatica((yyvsp[-7].no_arvore), (yyvsp[-5].texto), (yyvsp[-3].texto), (yyvsp[-1].no_arvore));  }
-#line 1412 "cool.tab.c"
+#line 1413 "cool.tab.c"
     break;
 
   case 22: /* expr: OBJECTID '(' exprs ')'  */
-#line 167 "cool.y"
+#line 168 "cool.y"
     {    (yyval.no_arvore) = new Chamada("self", (yyvsp[-3].texto), (yyvsp[-1].no_arvore));  }
-#line 1418 "cool.tab.c"
+#line 1419 "cool.tab.c"
     break;
 
   case 23: /* expr: IF expr THEN expr ELSE expr FI  */
-#line 170 "cool.y"
+#line 171 "cool.y"
     {    (yyval.no_arvore) = new If((yyvsp[-5].no_arvore), (yyvsp[-3].no_arvore), (yyvsp[-1].no_arvore));  }
-#line 1424 "cool.tab.c"
+#line 1425 "cool.tab.c"
     break;
 
   case 24: /* expr: WHILE expr LOOP expr POOL  */
-#line 173 "cool.y"
+#line 174 "cool.y"
     {    (yyval.no_arvore) = new While((yyvsp[-3].no_arvore), (yyvsp[-1].no_arvore));  }
-#line 1430 "cool.tab.c"
+#line 1431 "cool.tab.c"
     break;
 
   case 25: /* expr: '{' bloco_exprs '}'  */
-#line 176 "cool.y"
+#line 177 "cool.y"
     {    (yyval.no_arvore) = new Bloco((yyvsp[-1].no_arvore));  }
-#line 1436 "cool.tab.c"
+#line 1437 "cool.tab.c"
     break;
 
   case 26: /* expr: LET lista_let IN expr  */
-#line 179 "cool.y"
+#line 180 "cool.y"
     {    (yyval.no_arvore) = new Let((yyvsp[-2].no_arvore), (yyvsp[0].no_arvore));  }
-#line 1442 "cool.tab.c"
+#line 1443 "cool.tab.c"
     break;
 
   case 27: /* expr: CASE expr OF lista_cases ESAC  */
-#line 182 "cool.y"
+#line 183 "cool.y"
     {    (yyval.no_arvore) = new Case((yyvsp[-3].no_arvore), (yyvsp[-1].no_arvore));  }
-#line 1448 "cool.tab.c"
+#line 1449 "cool.tab.c"
     break;
 
   case 28: /* expr: NEW TYPEID  */
-#line 185 "cool.y"
+#line 186 "cool.y"
     {    (yyval.no_arvore) = new New((yyvsp[0].texto));  }
-#line 1454 "cool.tab.c"
+#line 1455 "cool.tab.c"
     break;
 
   case 29: /* expr: ISVOID expr  */
-#line 188 "cool.y"
+#line 189 "cool.y"
     {    (yyval.no_arvore) = new IsVoid((yyvsp[0].no_arvore));  }
-#line 1460 "cool.tab.c"
+#line 1461 "cool.tab.c"
     break;
 
   case 30: /* expr: expr '+' expr  */
-#line 191 "cool.y"
+#line 192 "cool.y"
     {    (yyval.no_arvore) = new Plus((yyvsp[-2].no_arvore), (yyvsp[0].no_arvore));  }
-#line 1466 "cool.tab.c"
+#line 1467 "cool.tab.c"
     break;
 
   case 31: /* expr: expr '-' expr  */
-#line 194 "cool.y"
+#line 195 "cool.y"
     {    (yyval.no_arvore) = new Minus((yyvsp[-2].no_arvore), (yyvsp[0].no_arvore));  }
-#line 1472 "cool.tab.c"
+#line 1473 "cool.tab.c"
     break;
 
   case 32: /* expr: expr '*' expr  */
-#line 197 "cool.y"
+#line 198 "cool.y"
     {    (yyval.no_arvore) = new Mult((yyvsp[-2].no_arvore), (yyvsp[0].no_arvore));  }
-#line 1478 "cool.tab.c"
+#line 1479 "cool.tab.c"
     break;
 
   case 33: /* expr: expr '/' expr  */
-#line 200 "cool.y"
+#line 201 "cool.y"
     {    (yyval.no_arvore) = new Divide((yyvsp[-2].no_arvore), (yyvsp[0].no_arvore));  }
-#line 1484 "cool.tab.c"
+#line 1485 "cool.tab.c"
     break;
 
   case 34: /* expr: '~' expr  */
-#line 203 "cool.y"
+#line 204 "cool.y"
     {    (yyval.no_arvore) = new Negacao((yyvsp[0].no_arvore));  }
-#line 1490 "cool.tab.c"
+#line 1491 "cool.tab.c"
     break;
 
   case 35: /* expr: expr '<' expr  */
-#line 206 "cool.y"
+#line 207 "cool.y"
     {    (yyval.no_arvore) = new MenorQue((yyvsp[-2].no_arvore), (yyvsp[0].no_arvore));  }
-#line 1496 "cool.tab.c"
+#line 1497 "cool.tab.c"
     break;
 
   case 36: /* expr: expr LE expr  */
-#line 209 "cool.y"
+#line 210 "cool.y"
     {    (yyval.no_arvore) = new MenorIgual((yyvsp[-2].no_arvore), (yyvsp[0].no_arvore));  }
-#line 1502 "cool.tab.c"
+#line 1503 "cool.tab.c"
     break;
 
   case 37: /* expr: expr '=' expr  */
-#line 212 "cool.y"
+#line 213 "cool.y"
     {    (yyval.no_arvore) = new Igual((yyvsp[-2].no_arvore), (yyvsp[0].no_arvore));  }
-#line 1508 "cool.tab.c"
+#line 1509 "cool.tab.c"
     break;
 
   case 38: /* expr: NOT expr  */
-#line 215 "cool.y"
+#line 216 "cool.y"
     {    (yyval.no_arvore) = new Not((yyvsp[0].no_arvore));  }
-#line 1514 "cool.tab.c"
+#line 1515 "cool.tab.c"
     break;
 
   case 39: /* expr: '(' expr ')'  */
-#line 218 "cool.y"
+#line 219 "cool.y"
     {    (yyval.no_arvore) = (yyvsp[-1].no_arvore);  }
-#line 1520 "cool.tab.c"
+#line 1521 "cool.tab.c"
     break;
 
   case 40: /* expr: OBJECTID  */
-#line 221 "cool.y"
+#line 222 "cool.y"
     {    (yyval.no_arvore) = new ObjectID((yyvsp[0].texto));  }
-#line 1526 "cool.tab.c"
+#line 1527 "cool.tab.c"
     break;
 
   case 41: /* expr: INT_CONST  */
-#line 224 "cool.y"
+#line 225 "cool.y"
     {    (yyval.no_arvore) = new Int(atoi((yyvsp[0].texto)));  }
-#line 1532 "cool.tab.c"
+#line 1533 "cool.tab.c"
     break;
 
   case 42: /* expr: STR_CONST  */
-#line 227 "cool.y"
+#line 228 "cool.y"
     {    (yyval.no_arvore) = new String((yyvsp[0].texto));  }
-#line 1538 "cool.tab.c"
+#line 1539 "cool.tab.c"
     break;
 
   case 43: /* expr: TRUE_CONST  */
-#line 230 "cool.y"
+#line 231 "cool.y"
     {    (yyval.no_arvore) = new Bool(true);  }
-#line 1544 "cool.tab.c"
+#line 1545 "cool.tab.c"
     break;
 
   case 44: /* expr: FALSE_CONST  */
-#line 233 "cool.y"
+#line 234 "cool.y"
     {    (yyval.no_arvore) = new Bool(false);  }
-#line 1550 "cool.tab.c"
+#line 1551 "cool.tab.c"
     break;
 
   case 45: /* exprs: %empty  */
-#line 238 "cool.y"
+#line 239 "cool.y"
     {
         (yyval.no_arvore) = new ListaExprs();
     }
-#line 1558 "cool.tab.c"
+#line 1559 "cool.tab.c"
     break;
 
   case 46: /* exprs: lista_exprs  */
-#line 242 "cool.y"
+#line 243 "cool.y"
     {
         (yyval.no_arvore) = (yyvsp[0].no_arvore);
     }
-#line 1566 "cool.tab.c"
+#line 1567 "cool.tab.c"
     break;
 
   case 47: /* lista_exprs: expr  */
-#line 249 "cool.y"
+#line 250 "cool.y"
     {
         /* encontrou a primeira expressao = cria uma nova lista vazia e adiciona ela */
         ListaExprs* l = new ListaExprs();
         l->adicionar((yyvsp[0].no_arvore));
         (yyval.no_arvore) = l;
     }
-#line 1577 "cool.tab.c"
+#line 1578 "cool.tab.c"
     break;
 
   case 48: /* lista_exprs: lista_exprs ',' expr  */
-#line 256 "cool.y"
+#line 257 "cool.y"
     {
         /* ja tem uma lista $1 = só adiciona a nova expressao $3 nela */
         ((ListaExprs*)(yyvsp[-2].no_arvore))->adicionar((yyvsp[0].no_arvore));
         (yyval.no_arvore) = (yyvsp[-2].no_arvore);
     }
-#line 1587 "cool.tab.c"
+#line 1588 "cool.tab.c"
     break;
 
   case 49: /* bloco_exprs: expr ';'  */
-#line 265 "cool.y"
+#line 266 "cool.y"
     {
         /* encontrou a primeira expressao = cria uma nova lista vazia e adiciona ela */
         BlocoExprs* l = new BlocoExprs();
         l->adicionar((yyvsp[-1].no_arvore));
         (yyval.no_arvore) = l;
     }
-#line 1598 "cool.tab.c"
+#line 1599 "cool.tab.c"
     break;
 
   case 50: /* bloco_exprs: bloco_exprs expr ';'  */
-#line 272 "cool.y"
+#line 273 "cool.y"
     {
         /* ja tem uma lista $1 = só adiciona a nova expressao $2 nela */
         ((BlocoExprs*)(yyvsp[-2].no_arvore))->adicionar((yyvsp[-1].no_arvore));
         (yyval.no_arvore) = (yyvsp[-2].no_arvore);
     }
-#line 1608 "cool.tab.c"
+#line 1609 "cool.tab.c"
     break;
 
   case 51: /* lista_let: OBJECTID ':' TYPEID  */
-#line 281 "cool.y"
+#line 282 "cool.y"
     {
         ListaLet* l = new ListaLet();
         l->adicionar(new LetItem((yyvsp[-2].texto), (yyvsp[0].texto), NULL));
         (yyval.no_arvore) = l;
     }
-#line 1618 "cool.tab.c"
+#line 1619 "cool.tab.c"
     break;
 
   case 52: /* lista_let: OBJECTID ':' TYPEID ASSIGN expr  */
-#line 288 "cool.y"
+#line 289 "cool.y"
     {
         ListaLet* l = new ListaLet();
         l->adicionar(new LetItem((yyvsp[-4].texto), (yyvsp[-2].texto), (yyvsp[0].no_arvore)));
         (yyval.no_arvore) = l;
     }
-#line 1628 "cool.tab.c"
+#line 1629 "cool.tab.c"
     break;
 
   case 53: /* lista_let: lista_let ',' OBJECTID ':' TYPEID  */
-#line 295 "cool.y"
+#line 296 "cool.y"
     {
         ((ListaLet*)(yyvsp[-4].no_arvore))->adicionar(new LetItem((yyvsp[-2].texto), (yyvsp[0].texto), NULL));
         (yyval.no_arvore) = (yyvsp[-4].no_arvore);
     }
-#line 1637 "cool.tab.c"
+#line 1638 "cool.tab.c"
     break;
 
   case 54: /* lista_let: lista_let ',' OBJECTID ':' TYPEID ASSIGN expr  */
-#line 301 "cool.y"
+#line 302 "cool.y"
     {
         ((ListaLet*)(yyvsp[-6].no_arvore))->adicionar(new LetItem((yyvsp[-4].texto), (yyvsp[-2].texto), (yyvsp[0].no_arvore)));
         (yyval.no_arvore) = (yyvsp[-6].no_arvore);
     }
-#line 1646 "cool.tab.c"
+#line 1647 "cool.tab.c"
     break;
 
   case 55: /* lista_cases: item_case  */
-#line 309 "cool.y"
+#line 310 "cool.y"
     {
         /* encontrou o primeiro case = cria uma nova lista vazia e adiciona ele */
         ListaCase* l = new ListaCase();
         l->adicionar((yyvsp[0].no_arvore));
         (yyval.no_arvore) = l;
     }
-#line 1657 "cool.tab.c"
+#line 1658 "cool.tab.c"
     break;
 
   case 56: /* lista_cases: lista_cases item_case  */
-#line 316 "cool.y"
+#line 317 "cool.y"
     {
         /* ja tem uma lista $1 = só adiciona o novo case $2 nela */
         ((ListaCase*)(yyvsp[-1].no_arvore))->adicionar((yyvsp[0].no_arvore));
         (yyval.no_arvore) = (yyvsp[-1].no_arvore);
     }
-#line 1667 "cool.tab.c"
+#line 1668 "cool.tab.c"
     break;
 
   case 57: /* item_case: OBJECTID ':' TYPEID DARROW expr ';'  */
-#line 325 "cool.y"
+#line 326 "cool.y"
     {
         /* $1 = id, $3 = tipo, $5 = corpo do case */
         (yyval.no_arvore) = new CaseItem((yyvsp[-5].texto), (yyvsp[-3].texto), (yyvsp[-1].no_arvore));
     }
-#line 1676 "cool.tab.c"
+#line 1677 "cool.tab.c"
     break;
 
 
-#line 1680 "cool.tab.c"
+#line 1681 "cool.tab.c"
 
       default: break;
     }
@@ -1869,7 +1870,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 331 "cool.y"
+#line 332 "cool.y"
 
 
 void yyerror(const char *s) {
@@ -1906,6 +1907,9 @@ int main(int argc, char **argv) {
                 printf("Erros semanticos encontrados.\n");
             } else {
                 printf("Analise semantica concluida com sucesso!\n");
+                printf("\n=== GERACAO DE CODIGO (BRIL) ===\n");
+                GeradorCodigo gerador;
+                gerador.gerar(raiz_arv, "saida.bril");
             }
         } else {
             printf("A arvore de sintaxe abstrata esta vazia.\n");

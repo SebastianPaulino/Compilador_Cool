@@ -1,4 +1,4 @@
-class Main inherits IO2 {
+class Main inherits IO {
     main(): Object {
         let hello: String <- "Hello, ",
             name: String <- "",

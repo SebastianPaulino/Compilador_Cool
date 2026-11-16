@@ -1,0 +1,224 @@
+@str_set(buf: ptr<int>, pos: int, val: int) {
+  ptr: ptr<int> = ptradd buf pos;
+  store ptr val;
+}
+
+@IO_out_string(self: ptr<int>, str: ptr<int>) {
+  one: int = const 1;
+  len: int = load str;
+  idx_i: int = const 0;
+.loop_out:
+  cond: bool = lt idx_i len;
+  br cond .body_out .end_out;
+.body_out:
+  idx: int = add idx_i one;
+  ptr_p: ptr<int> = ptradd str idx;
+  ascii: int = load ptr_p;
+  print ascii;
+  idx_i: int = add idx_i one;
+  jmp .loop_out;
+.end_out:
+}
+
+@Main_main(self: ptr<int>) {
+  t1: int = const 7;
+  t2: int = const 8;
+  t3: ptr<int> = alloc t2;
+  store t3 t1;
+  t4: int = const 1;
+  t5: int = const 72;
+  call @str_set t3 t4 t5;
+  t4: int = const 2;
+  t5: int = const 101;
+  call @str_set t3 t4 t5;
+  t4: int = const 3;
+  t5: int = const 108;
+  call @str_set t3 t4 t5;
+  t4: int = const 4;
+  t5: int = const 108;
+  call @str_set t3 t4 t5;
+  t4: int = const 5;
+  t5: int = const 111;
+  call @str_set t3 t4 t5;
+  t4: int = const 6;
+  t5: int = const 44;
+  call @str_set t3 t4 t5;
+  t4: int = const 7;
+  t5: int = const 32;
+  call @str_set t3 t4 t5;
+  hello_0: ptr<int> = id t3;
+  t7: int = const 0;
+  t8: int = const 1;
+  t9: ptr<int> = alloc t8;
+  store t9 t7;
+  name_6: ptr<int> = id t9;
+  t11: int = const 2;
+  t12: int = const 3;
+  t13: ptr<int> = alloc t12;
+  store t13 t11;
+  t14: int = const 1;
+  t15: int = const 33;
+  call @str_set t13 t14 t15;
+  t14: int = const 2;
+  t15: int = const 10;
+  call @str_set t13 t14 t15;
+  ending_10: ptr<int> = id t13;
+  t16: int = const 24;
+  t17: int = const 25;
+  t18: ptr<int> = alloc t17;
+  store t18 t16;
+  t19: int = const 1;
+  t20: int = const 80;
+  call @str_set t18 t19 t20;
+  t19: int = const 2;
+  t20: int = const 108;
+  call @str_set t18 t19 t20;
+  t19: int = const 3;
+  t20: int = const 101;
+  call @str_set t18 t19 t20;
+  t19: int = const 4;
+  t20: int = const 97;
+  call @str_set t18 t19 t20;
+  t19: int = const 5;
+  t20: int = const 115;
+  call @str_set t18 t19 t20;
+  t19: int = const 6;
+  t20: int = const 101;
+  call @str_set t18 t19 t20;
+  t19: int = const 7;
+  t20: int = const 32;
+  call @str_set t18 t19 t20;
+  t19: int = const 8;
+  t20: int = const 101;
+  call @str_set t18 t19 t20;
+  t19: int = const 9;
+  t20: int = const 110;
+  call @str_set t18 t19 t20;
+  t19: int = const 10;
+  t20: int = const 116;
+  call @str_set t18 t19 t20;
+  t19: int = const 11;
+  t20: int = const 101;
+  call @str_set t18 t19 t20;
+  t19: int = const 12;
+  t20: int = const 114;
+  call @str_set t18 t19 t20;
+  t19: int = const 13;
+  t20: int = const 32;
+  call @str_set t18 t19 t20;
+  t19: int = const 14;
+  t20: int = const 121;
+  call @str_set t18 t19 t20;
+  t19: int = const 15;
+  t20: int = const 111;
+  call @str_set t18 t19 t20;
+  t19: int = const 16;
+  t20: int = const 117;
+  call @str_set t18 t19 t20;
+  t19: int = const 17;
+  t20: int = const 114;
+  call @str_set t18 t19 t20;
+  t19: int = const 18;
+  t20: int = const 32;
+  call @str_set t18 t19 t20;
+  t19: int = const 19;
+  t20: int = const 110;
+  call @str_set t18 t19 t20;
+  t19: int = const 20;
+  t20: int = const 97;
+  call @str_set t18 t19 t20;
+  t19: int = const 21;
+  t20: int = const 109;
+  call @str_set t18 t19 t20;
+  t19: int = const 22;
+  t20: int = const 101;
+  call @str_set t18 t19 t20;
+  t19: int = const 23;
+  t20: int = const 58;
+  call @str_set t18 t19 t20;
+  t19: int = const 24;
+  t20: int = const 10;
+  call @str_set t18 t19 t20;
+  call @IO_out_string self t18;
+  t21: int = const 0;
+  t22: int = const 1;
+  t23: ptr<int> = alloc t22;
+  store t23 t21;
+  name_6: ptr<int> = id t23;
+  t24: int = const 1;
+  t25: int = load name_6;
+  t26: int = load ending_10;
+  t27: int = add t25 t26;
+  t28: int = add t27 t24;
+  t29: ptr<int> = alloc t28;
+  store t29 t27;
+  t30: int = const 0;
+.cat_c1_0:
+  t31: bool = lt t30 t25;
+  br t31 .cat_b1_1 .cat_e1_2;
+.cat_b1_1:
+  t32: int = add t30 t24;
+  t33: ptr<int> = ptradd name_6 t32;
+  t34: int = load t33;
+  t35: ptr<int> = ptradd t29 t32;
+  store t35 t34;
+  t30: int = add t30 t24;
+  jmp .cat_c1_0;
+.cat_e1_2:
+  t36: int = const 0;
+.cat_c2_3:
+  t37: bool = lt t36 t26;
+  br t37 .cat_b2_4 .cat_e2_5;
+.cat_b2_4:
+  t38: int = add t36 t24;
+  t39: ptr<int> = ptradd ending_10 t38;
+  t40: int = load t39;
+  t41: int = add t25 t38;
+  t42: ptr<int> = ptradd t29 t41;
+  store t42 t40;
+  t36: int = add t36 t24;
+  jmp .cat_c2_3;
+.cat_e2_5:
+  t43: int = const 1;
+  t44: int = load hello_0;
+  t45: int = load t29;
+  t46: int = add t44 t45;
+  t47: int = add t46 t43;
+  t48: ptr<int> = alloc t47;
+  store t48 t46;
+  t49: int = const 0;
+.cat_c1_6:
+  t50: bool = lt t49 t44;
+  br t50 .cat_b1_7 .cat_e1_8;
+.cat_b1_7:
+  t51: int = add t49 t43;
+  t52: ptr<int> = ptradd hello_0 t51;
+  t53: int = load t52;
+  t54: ptr<int> = ptradd t48 t51;
+  store t54 t53;
+  t49: int = add t49 t43;
+  jmp .cat_c1_6;
+.cat_e1_8:
+  t55: int = const 0;
+.cat_c2_9:
+  t56: bool = lt t55 t45;
+  br t56 .cat_b2_10 .cat_e2_11;
+.cat_b2_10:
+  t57: int = add t55 t43;
+  t58: ptr<int> = ptradd t29 t57;
+  t59: int = load t58;
+  t60: int = add t44 t57;
+  t61: ptr<int> = ptradd t48 t60;
+  store t61 t59;
+  t55: int = add t55 t43;
+  jmp .cat_c2_9;
+.cat_e2_11:
+  call @IO_out_string self t48;
+}
+
+@main {
+  one: int = const 1;
+  main_obj: ptr<int> = alloc one;
+  call @Main_main main_obj;
+  free main_obj;
+}
